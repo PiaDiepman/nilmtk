@@ -213,8 +213,8 @@ class DATAPORT_API():
                     self.test_submeters = test_appliances
                     print("Results for Dataset {dataset} Building {building} Chunk {chunk_num}".format(dataset=dataset,building=building,chunk_num=chunk_num))
                     self.storing_key = str(dataset) + "_" + str(building) + "_" + str(chunk_num) 
-                    self.call_predict(self.classifiers)
-
+                    self.call_predict(self.classifiers, test.metadata['timezone'])
+                    
 
     def train_jointly(self,clf,d):
 
@@ -292,7 +292,7 @@ class DATAPORT_API():
                     self.test_submeters.append((appliance_name,[appliance_readings[i]]))
                 
                 self.storing_key = str(dataset) + "_" + str(building) 
-                self.call_predict(self.classifiers)
+                self.call_predict(self.classifiers, test.metadata['timezone'])
             
 
     def dropna(self,mains_df, appliance_dfs):
@@ -353,7 +353,7 @@ class DATAPORT_API():
             for i in gt_overall.columns:
 
                 plt.figure()            
-                #plt.plot(self.test_mains[0],label='Mains reading')
+                plt.plot(self.test_mains[0],label='Mains reading')
                 plt.plot(gt_overall[i],label='Truth')
                 for clf in pred_overall:                
                     plt.plot(pred_overall[clf][i],label=clf)
